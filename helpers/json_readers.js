@@ -4,15 +4,18 @@
 
 const fs = require('fs');
 const fsp = require('fs-promise');
-const students_path = path.join(__dirname, 'models/students.json');
-const student_path = path.join(__dirname, 'models/student.json');
-const cohorts_path = path.join(__dirname, 'models/cohorts.json');
-const cohort_students_path = path.join(__dirname, 'models/cohort_students.json');
+const path = require('path');
+const students_path = path.join(__dirname, '../models/students.json');
+const student_path = path.join(__dirname, '../models/student.json');
+const cohorts_path = path.join(__dirname, '../models/cohorts.json');
+const cohort_students_path = path.join(__dirname, '../models/cohort_students.json');
 
 function getStudents() {
-    fsp.readFile(students_path)
+    fsp.readFile(students_path, {
+            encoding: 'utf8'
+        })
         .then((students) => {
-          return students;
+            return JSON.parse(students);
         })
         .catch((err) => {
             console.error(err.stack);
@@ -20,9 +23,9 @@ function getStudents() {
 }
 
 function getStudent() {
-    fsp.readFile(student_path)
+    return fsp.readFile(student_path)
         .then((student) => {
-          return student;
+            return JSON.parse(student);
         })
         .catch((err) => {
             console.error(err.stack);
@@ -30,9 +33,9 @@ function getStudent() {
 }
 
 function getCohorts() {
-    fsp.readFile(cohorts_path)
+    return fsp.readFile(cohorts_path)
         .then((cohorts) => {
-          return cohorts;
+            return JSON.parse(cohorts);
         })
         .catch((err) => {
             console.error(err.stack);
@@ -40,11 +43,16 @@ function getCohorts() {
 }
 
 function getCohortStudents() {
-    fsp.readFile(cohort_students_path)
+    return fsp.readFile(cohort_students_path)
         .then((students) => {
-          return students;
+            return JSON.parse(students);
         })
         .catch((err) => {
             console.error(err.stack);
         });
 }
+
+getStudent().then((result) => console.log(result));
+getStudents().then((result) => console.log(result));
+getCohorts().then((result) => console.log(result));
+getCohortStudents().then((result) => console.log(result));
